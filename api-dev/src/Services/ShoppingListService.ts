@@ -1,17 +1,18 @@
-import { getRepository } from "typeorm";
+import { AppDataSource } from "../data-source";
 import { Recipe } from "../Entities/Recipe";
 import { ShoppingList } from "../Entities/ShoppingList";
 
 export class ShoppingListService {
   static async getOne(id: number): Promise<ShoppingList | undefined> {
-    const shoppingList = await getRepository(ShoppingList).findOne(id, {
-      relations: ["recipes"],
+    const shoppingList = await AppDataSource.getRepository(ShoppingList).findOne({
+      where: { id },
+      relations: ["recipes", "recipes.ingredients"],
     });
-    return shoppingList;
+    return shoppingList ?? undefined;
   }
 
   static async list(): Promise<ShoppingList[]> {
-    const shoppingListList = await getRepository(ShoppingList).find({
+    const shoppingListList = await AppDataSource.getRepository(ShoppingList).find({
       relations: ["recipes"],
     });
     return shoppingListList;
@@ -23,7 +24,7 @@ export class ShoppingListService {
     maximumPrice: number | undefined;
     numberOfPeople: number | undefined;
   }): Promise<ShoppingList> {
-    const recipesQuery = getRepository(Recipe)
+    const recipesQuery = AppDataSource.getRepository(Recipe)
       .createQueryBuilder("recipe")
       .select("recipe")
       .addSelect("SUM(ingredient.price * recipe.numberOfPeople)", "sum")
@@ -53,20 +54,20 @@ export class ShoppingListService {
     shoppingListWithRecipes.name = shoppingList.name;
     shoppingListWithRecipes.recipes = recipes;
 
-    const newShoppingList = await getRepository(ShoppingList).save(
+    const newShoppingList = await AppDataSource.getRepository(ShoppingList).save(
       shoppingListWithRecipes
     );
     return newShoppingList;
   }
 
   static async update(shoppingList: ShoppingList): Promise<ShoppingList> {
-    const updatedShoppingList = await getRepository(ShoppingList).save(
+    const updatedShoppingList = await AppDataSource.getRepository(ShoppingList).save(
       shoppingList
     );
     return updatedShoppingList;
   }
 
   static async delete(id: number): Promise<void> {
-    await getRepository(ShoppingList).delete(id);
+    await AppDataSource.getRepository(ShoppingList).delete(id);
   }
 }

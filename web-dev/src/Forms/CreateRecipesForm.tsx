@@ -13,7 +13,7 @@ import { useQueryIngredientList } from "../Hooks/Query/IngredientQuery";
 import { ErrorPage } from "../Pages/ErrorPage";
 import { Ingredient } from "../Types/Ingredient";
 import { OptionsMultiSelectType } from "../Types/OptionsMultiSelect";
-
+import {NotificationSnackbar} from "../Components/NotificationSnackbar";
 export function CreateRecipesForm(): JSX.Element {
   const [name, setName] = useState("");
   const [timeToCook, setTimeToCook] = useState<number>(0);
@@ -24,6 +24,20 @@ export function CreateRecipesForm(): JSX.Element {
   const { mutateAsync: createRecipe } = useMutationRecipeCreate();
   const { data: ingredients, status, isLoading } = useQueryIngredientList();
 
+  const [notif, setNotif] = useState({
+    open: false,
+    message: "",
+    severity: "success" as "success" | "error",
+  });
+  const handleCloseNotif = () => {
+    setNotif({ ...notif, open: false });
+  };
+  const handleOpenNotif = (
+    message: string,
+    severity: "success" | "error"
+  ) => {
+    setNotif({ open: true, message, severity });
+  };
   const resetFields = () => {
     setName("");
     setTimeToCook(0);
@@ -36,13 +50,21 @@ export function CreateRecipesForm(): JSX.Element {
       alert("Please fill all the fields");
       return;
     }
-
-    await createRecipe({
-      name,
-      timeToCook,
-      numberOfPeople,
-      ingredients: selectedIngredients.map((e) => e.id),
-    });
+    try {
+      await createRecipe({
+        name,
+        timeToCook,
+        numberOfPeople,
+        ingredients: selectedIngredients.map((e) => e.id),
+      });
+      handleOpenNotif("Recipe created", "success");
+      resetFields();
+    } catch (error:any) {
+      const message = 
+      error.response?.data?.errorMessage || "An error occurred while creating the recipe";
+      handleOpenNotif(message, "error");
+    }
+   
 
     resetFields();
   };
@@ -127,6 +149,13 @@ export function CreateRecipesForm(): JSX.Element {
           </FormControl>
         </CardCustom>
       </Box>
+      <NotificationSnackbar
+        open={notif.open}
+        onClose={handleCloseNotif}
+        message={notif.message}
+        severity={notif.severity}
+        autoHideDuration={5000}
+      />
     </div>
   );
 }

@@ -1,20 +1,25 @@
 import { useMutation, UseMutationResult, useQueryClient } from "react-query";
 import axios from "../../Utils/axios";
 import { Requests } from "../QueriesAndMutationList";
-
+type IngredinetPayload = {
+  name: string;
+  price: number;
+  tag: string;
+};
 export const useMutationIngredientCreate = (): UseMutationResult<
   any,
   unknown,
-  { name: string; price: number }
+  IngredinetPayload
 > => {
   const clientQuery = useQueryClient();
 
   return useMutation(
     [Requests.createIngredient],
-    async ({ name, price }: { name: string; price: number }) => {
+    async ({ name, price ,tag}: IngredinetPayload) => {
       return await axios.post(`/ingredient/create`, {
         name,
         price,
+        tag,
       });
     },
     {

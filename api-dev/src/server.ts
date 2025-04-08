@@ -1,7 +1,13 @@
 import app from "./app";
-import { IngredientController } from "./Controllers/IngredientController";
+import { AppDataSource } from "./data-source";
 import { Logger } from "./logger";
 
-app.listen(3001, () => {
-  Logger.info(`Server started on port 3001`);
+AppDataSource.initialize()
+.then(() => {
+  app.listen(3001, () => {
+    Logger.info("Server is running on port 3001");
+  });
+})
+.catch((error) => {
+  Logger.error("Error during Data Source initialization", error);
 });

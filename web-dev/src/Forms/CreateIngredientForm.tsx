@@ -8,6 +8,7 @@ export function CreateIngredientForm(): JSX.Element {
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState<number>(0);
+  const [tag, setTag] = useState("légumes");
 
   const resetFields = () => {
     setName("");
@@ -22,6 +23,7 @@ export function CreateIngredientForm(): JSX.Element {
     await createIngredient({
       name,
       price,
+      tag,
     });
 
     resetFields();
@@ -62,6 +64,20 @@ export function CreateIngredientForm(): JSX.Element {
               *Keep in mind that the price is for one person. Prices are
               multiplied by the number of people in the recipe.
             </span>
+          </FormControl>
+          <FormControl fullWidth margin="normal">
+            <TextField
+              select
+              label="Type d'ingrédient"
+              value={tag}
+              onChange={(e) => setTag(e.target.value)}
+              SelectProps={{ native: true }}
+              variant="outlined"
+            >
+              <option value="légumes">Légumes</option>
+              <option value="protéines">Protéines</option>
+              <option value="féculents">Féculents</option>
+            </TextField>
           </FormControl>
 
           <FormControl margin="normal">

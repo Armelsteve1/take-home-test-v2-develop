@@ -30,6 +30,7 @@
         . Pas de gestion centralisée des erreurs (pas de middleware globale # errorHandler, bien que # middlewares.ts existe, il peut être enrichi).
         . Pas de test unitaire (0 test🥲)
         . Pas de typage précis dans les réponses API
+        . Utilisation d'une ancienne version TypeORM (problèmes de compatibilité si jamais `getRepository` est déprécié totalement)
 
     $$
     3.2 Front-End
@@ -49,3 +50,4 @@
     . Factoriser les formulaires avec un hook type useFormHandler.
     . Ajouter des tests côté frontend sur au moins un formulaire (ex: CreateIngredientForm.test.tsx)
     . Adapter UI/UX et rendre les pages responsive.
+    .Migration vers une version de TypeORM > v0.3+ 
