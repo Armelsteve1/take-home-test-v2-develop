@@ -19,7 +19,8 @@ export const useMutationIngredientCreate = (): UseMutationResult<
     },
     {
       onSuccess: () => {
-        clientQuery.invalidateQueries(Requests.listRecipe);
+        //Common mistake: invalidating the wrong query (recipes instead of ingredients) -corrected now
+        clientQuery.invalidateQueries(Requests.listIngredient);
       },
     }
   );

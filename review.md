@@ -48,3 +48,4 @@
     . Ajouter des # toasts pour le feedback utilisateur.
     . Factoriser les formulaires avec un hook type useFormHandler.
     . Ajouter des tests côté frontend sur au moins un formulaire (ex: CreateIngredientForm.test.tsx)
+    . Adapter UI/UX et rendre les pages responsive.
