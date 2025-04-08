@@ -14,20 +14,30 @@ export class RecipeController {
   public static async create(req: any, res: any, next: any): Promise<void> {
     try {
       const recipe = await RecipeService.create(req.body);
-      res.send(recipe);
-    } catch (err) {
+      res.status(201).send({
+        status: "success",
+        message: "Recipe created successfully",
+        data: recipe,
+      });
+    } catch (err: any) {
       console.error("[RecipeController.create] Error creating recipe", err);
-      res.send(500);
+      const errorMessage = err.message || "An error occurred while creating the recipe";
+      res.status(400).send({ status: "error", errorMessage });
     }
   }
 
   public static async update(req: any, res: any, next: any): Promise<void> {
     try {
       const recipe = await RecipeService.update(req.body);
-      res.send(recipe);
-    } catch (err) {
+      res.status(200).send({
+        status: "success",
+        message: "Recipe updated successfully",
+        data: recipe,
+      });
+    } catch (err:any) {
       console.error("[RecipeController.update] Error updating recipe", err);
-      res.send(500);
+      const errorMessage = err.message || "An error occurred while updating the recipe";
+      res.status(400).send({ status: "error", errorMessage });
     }
   }
 
