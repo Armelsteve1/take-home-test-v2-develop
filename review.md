@@ -31,6 +31,7 @@
         . Pas de test unitaire (0 test🥲)
         . Pas de typage précis dans les réponses API
         . Utilisation d'une ancienne version TypeORM (problèmes de compatibilité si jamais `getRepository` est déprécié totalement)
+        . Configuration sensible en dur dans `ormconfig.json` (mot de passe, user, db name, ...) ce qui pose un vrai problème de sécurité.
 
     $$
     3.2 Front-End
@@ -51,3 +52,4 @@
     . Ajouter des tests côté frontend sur au moins un formulaire (ex: CreateIngredientForm.test.tsx)
     . Adapter UI/UX et rendre les pages responsive.
     .Migration vers une version de TypeORM > v0.3+ 
+    . Il est fortement recommandé d'utiliser un fichier `.env` pour charger ces variables dans `data-source.ts` ou `ormconfig.js`
